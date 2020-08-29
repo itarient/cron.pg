@@ -24,7 +24,7 @@ postgres:~# vim my_jon2.sh
 
 Use the following variables
 
-* JOB_DIR - target volume for your backups. backup.sh will form the following file structure inside it:
+* JOB_DIR - destination storage for your backups. backup.sh will form the following file structure inside it:
 
 ```
 JOB_DIR
@@ -46,15 +46,27 @@ JOB_DIR
 * JOB_DBLIST - space-separated database names to be backuped
 * JOB_KEEP - keep this number of backup files
 
-See examples.
+See an examples.
 
 4. add your jobs to the crontab
 
+```bash
+postgres:~# crontab -e
+```
 ```
 0 4     * * 6   cd /var/lib/postgresql/cron.pg.d && ./job_weekly_keep4.sh
 0 4     * * *   cd /var/lib/postgresql/cron.pg.d && ./job_daily_keep20.sh
 ```
 
-5. **!!! CHECK YOUR JOBS ARE MADE !!!**
+5. Check your authorization rules in your pg_hba.conf. You need local peer authorization rule if you don't want specify login and passowrds inside your jobs. **If you use auxiliary user to make backups, change backup.sh, and add -U parameter to the pg_dump command line. Also use ~/.pgpass file for storing user password. This is MUST be done under different non-privileged system user, NOT postgres, and NOT root!!!***
 
-6. **!!! !!! REGULARLY CHECK YOUR BACKUPS ARE RESTORABLE !!! !!!**
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     peer
+```
+
+6. **!!! CHECK YOUR JOBS ARE MADE !!!**
+
+7. **!!! !!! REGULARLY CHECK YOUR BACKUPS ARE RESTORABLE !!! !!!**
