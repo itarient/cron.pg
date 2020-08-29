@@ -5,8 +5,9 @@ Simple bash script for postgresql databases backup through a cron daemon.
 
 1. Login under postgres system user and create some folder in postgre' home directory
 
-`root:~# su -l postgres
-postgres:~# mkdir cron.pg.d`
+`root:~# su -l postgres`
+
+`postgres:~# mkdir cron.pg.d`
 
 2. copy backup.sh into cron.pg.d
 
